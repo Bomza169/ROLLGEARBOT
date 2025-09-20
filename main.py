@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import random
 import re
-
+from myserver import server_on
 
 # ต้องเปิด message_content intent ใน Discord Developer Portal ด้วย!
 intents = discord.Intents.default()
@@ -70,5 +70,7 @@ async def roll(ctx, *, arg):
     else:
         await ctx.reply("❌ ตอนนี้รองรับแค่ d6 (custom) และ d2 เท่านั้น!")
 
+
+server_on()
 
 bot.run(os.getenv('TOKEN'))
