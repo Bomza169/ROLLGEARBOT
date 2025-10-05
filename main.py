@@ -37,10 +37,10 @@ async def on_ready():
 
 @bot.command(name="r")
 async def roll(ctx, *, arg):
-    # รูปแบบ เช่น "3d6 +2"
-    match = re.match(r"(\d+)d(\d+)(?:\s*\+(\d+))?", arg.strip())
+    # รองรับทั้ง + และ - เช่น 3d6 +2 หรือ 3d6 -2
+    match = re.match(r"(\d+)d(\d+)(?:\s*([+-]\d+))?", arg.strip())
     if not match:
-        await ctx.send("❌ รูปแบบไม่ถูกต้อง! ใช้แบบนี้: !!!r 3d6 +2")
+        await ctx.send("❌ รูปแบบไม่ถูกต้อง! ใช้แบบนี้: r3d6 +2 หรือ r3d6 -1")
         return
 
     num_dice = int(match.group(1))
@@ -57,19 +57,19 @@ async def roll(ctx, *, arg):
             total_score += score
         total_score += bonus
         result_text = "\n".join(results)
+        sign = f"+{bonus}" if bonus >= 0 else f"{bonus}"
         await ctx.reply(
-            f"{ctx.author.mention}🎲 ทอย {num_dice}d6 + {bonus}\n{result_text}\nรวมแต้ม: **{total_score}**"
+            f"{ctx.author.mention} 🎲 ทอย {num_dice}d6 {sign}\n{result_text}\nรวมแต้ม: **{total_score}**"
         )
 
     elif dice_type == 2:  # d2 เหรียญ
         for _ in range(num_dice):
             results.append(roll_d2())
         result_text = ", ".join(results)
-        await ctx.reply(f"{ctx.author.mention}🪙 ทอย {num_dice}d2\nผลลัพธ์: {result_text}")
+        await ctx.reply(f"{ctx.author.mention} 🪙 ทอย {num_dice}d2\nผลลัพธ์: {result_text}")
 
     else:
         await ctx.reply("❌ ตอนนี้รองรับแค่ d6 (custom) และ d2 เท่านั้น!")
-
 
 server_on()
 
