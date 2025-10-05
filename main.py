@@ -74,3 +74,4 @@ async def roll(ctx, *, arg):
 server_on()
 
 bot.run(os.getenv('TOKEN'))
+
